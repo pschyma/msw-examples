@@ -1,4 +1,4 @@
-import { http, graphql, HttpResponse } from 'msw'
+import {http, graphql, HttpResponse} from 'msw'
 
 export const handlers = [
   http.get('https://api.example.com/user', () => {
@@ -6,6 +6,12 @@ export const handlers = [
       firstName: 'John',
       lastName: 'Maverick',
     })
+  }),
+  http.post('https://api.example.com/upload', async ({request}) => {
+    console.log(request.headers);
+
+    const formData = await request.formData();
+    return HttpResponse.json({keys: [...formData.keys()]});
   }),
   graphql.query('ListMovies', () => {
     return HttpResponse.json({

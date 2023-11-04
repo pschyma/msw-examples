@@ -2,6 +2,8 @@
  * @vitest-environment jsdom
  */
 
+import axios from "axios";
+
 it('fetches the user info', async () => {
   const response = await fetch('https://api.example.com/user')
 
@@ -48,3 +50,17 @@ it('fetches the list of movies', async () => {
     },
   })
 })
+
+it('integrates with axios like with fetch', async () => {
+  const data = new FormData();
+  data.append('part-1', new File(['test-content'], 'test-file.txt'));
+  data.append('part-2', JSON.stringify({'field-1': 1}));
+
+  console.log(
+      await fetch(new URL('https://api.example.com/upload'), {
+        method: 'post',
+        body: data,
+      }),
+  );
+  console.log(await axios.post('https://api.example.com/upload', data));
+});
